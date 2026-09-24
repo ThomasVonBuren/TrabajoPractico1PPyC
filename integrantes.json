@@ -1,7 +1,22 @@
 {
-  "grupo": "REEMPLAZAR_CON_NOMBRE_DEL_GRUPO",
-  "repositorio": "REEMPLAZAR_CON_URL_DEL_REPOSITORIO",
+  "grupo": "Los Deadlock",
+  "repositorio": "https://github.com/ThomasVonBuren/TrabajoPractico1PPyC",
   "integrantes": [
+    {
+      "nombre": "Thomas von Büren",
+      "documento": "43136697",
+      "usuarioGit": "ThomasVonBuren"
+    },
+    {
+      "nombre": "REEMPLAZAR",
+      "documento": "REEMPLAZAR",
+      "usuarioGit": "REEMPLAZAR"
+    },
+    {
+      "nombre": "REEMPLAZAR",
+      "documento": "REEMPLAZAR",
+      "usuarioGit": "REEMPLAZAR"
+    },
     {
       "nombre": "REEMPLAZAR",
       "documento": "REEMPLAZAR",
