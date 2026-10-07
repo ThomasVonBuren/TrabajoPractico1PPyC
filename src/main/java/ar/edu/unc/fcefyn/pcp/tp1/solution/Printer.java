@@ -69,6 +69,10 @@ public class Printer {
         currentOrder.assignPrinter(this.id);
     }
 
+    public void setNoOrder() {
+        this.currentOrder = null;
+    }
+
     public void setCurrentState(PrinterState currentState) {
         this.currentState = currentState;
     }
@@ -81,4 +85,6 @@ public class Printer {
     public void setUsageCount(int usageCount) {
         this.usageCount = usageCount;
     }
+
+    public void usePrinter() { ++this.usageCount; }
 }
