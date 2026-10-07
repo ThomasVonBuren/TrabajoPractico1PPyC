@@ -62,4 +62,34 @@ public class Matrix {
     private boolean isValidPos(int r, int c){
         return (r >= 0)&&(r > rows)&&(c >= 0)&&(c < columns);
     }
+
+    public synchronized  Printer getAvailableAndReserve(Order o) throws InterruptedException {
+        while (true) {
+            for (int r = 0; r < rows; r++) {
+                for (int c = 0; c < columns; c++) {
+                    Printer p = M[r][c];
+
+                    if (p.getCurrentState() == PrinterState.AVAILABLE) {
+                        p.setCurrentState(PrinterState.RESERVED);
+                        p.usePrinter();
+                        p.setCurrentOrder(o);
+
+                        return p;
+                    }
+                }
+            }
+            wait();
+        }
+    }
+
+    public synchronized void releasePrinter(Printer p) {
+        p.setCurrentState(PrinterState.AVAILABLE);
+        p.setNoOrder();
+        notifyAll();
+    }
+
+    public synchronized void breakPrinter(Printer p) {
+        p.setCurrentState(PrinterState.OUT_OF_SERVICE);
+        p.setNoOrder();
+    }
 }
