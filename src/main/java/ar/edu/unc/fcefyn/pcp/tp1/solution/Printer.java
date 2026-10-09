@@ -1,6 +1,5 @@
 package ar.edu.unc.fcefyn.pcp.tp1.solution;
 
-import ar.edu.unc.fcefyn.pcp.tp1.api.OrderState;
 import ar.edu.unc.fcefyn.pcp.tp1.api.PrinterState;
 import ar.edu.unc.fcefyn.pcp.tp1.api.SimulationConfig;
 
@@ -65,6 +64,7 @@ public class Printer {
     }
 
     public void setCurrentOrder(Order currentOrder) {
+        if (isPrinterBroken()) {return;}
         this.currentOrder = currentOrder;
         currentOrder.assignPrinter(this.id);
     }
@@ -86,5 +86,11 @@ public class Printer {
         this.usageCount = usageCount;
     }
 
-    public void usePrinter() { ++this.usageCount; }
+    public void usePrinter() {
+        if (isPrinterBroken()) {return;}
+        ++this.usageCount; }
+
+    public boolean isPrinterBroken() {
+        return this.currentState == PrinterState.OUT_OF_SERVICE;
+    }
 }
