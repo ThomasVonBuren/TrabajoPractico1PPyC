@@ -4,6 +4,8 @@ import ar.edu.unc.fcefyn.pcp.tp1.api.OrderState;
 import ar.edu.unc.fcefyn.pcp.tp1.api.OutcomeDecider;
 import ar.edu.unc.fcefyn.pcp.tp1.api.SimulationConfig;
 
+import java.util.concurrent.TimeUnit;
+
 public class ValidationWorker implements Runnable {
     private final ThreadSafeBufferQueue<Order> inQueue;
     private final ThreadSafeBufferQueue<Order> outQueue;
@@ -45,7 +47,7 @@ public ValidationWorker(ThreadSafeBufferQueue<Order> inQueue, ThreadSafeBufferQu
                     String printerId = order.getAssignedPrinterId();
                     matrix.releasePrinterById(printerId);
                     if (validationDelayMs > 0){
-                        Thread.sleep(validationDelayMs);
+                        TimeUnit.MILLISECONDS.sleep(validationDelayMs);
                     }
                     logger.logEvent(order.getId(), 2, 1, OrderState.WAITING_VALIDATION, OrderState.REJECTED, order.getAssignedPrinterId());
                 }
