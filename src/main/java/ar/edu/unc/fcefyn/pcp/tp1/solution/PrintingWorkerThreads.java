@@ -4,6 +4,8 @@ import ar.edu.unc.fcefyn.pcp.tp1.api.OrderState;
 import ar.edu.unc.fcefyn.pcp.tp1.api.OutcomeDecider;
 import ar.edu.unc.fcefyn.pcp.tp1.api.SimulationConfig;
 
+import java.util.concurrent.TimeUnit;
+
 public class PrintingWorkerThreads implements Runnable{
     private final ThreadSafeBufferQueue<Order> readyQueue;
     private final ThreadSafeBufferQueue<Order> printedQueue;
@@ -50,7 +52,7 @@ public class PrintingWorkerThreads implements Runnable{
 
                 long delayMS = config.printingDelayMillis();
                 if (delayMS >0) {
-                    Thread.sleep(delayMS);
+                    TimeUnit.MILLISECONDS.sleep(delayMS);
                 }
             }
         } catch (InterruptedException e){
