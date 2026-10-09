@@ -32,7 +32,7 @@ public class AssignmentWorker implements Runnable {
                 order.incrementCount(0);
 
                 if (assignmentDelayMs > 0){
-                    TimeUnit.MILLISECONDS.sleep(assignmentDelayMs);
+                    Thread.sleep(assignmentDelayMs);
                 }
                 logger.logEvent(order.getId(), 0, 1, OrderState.CREATED, OrderState.WAITING_VALIDATION, printer.getId());
                 outQueue.push(order);
