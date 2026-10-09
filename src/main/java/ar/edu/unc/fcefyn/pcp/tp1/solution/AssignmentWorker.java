@@ -2,6 +2,8 @@ package ar.edu.unc.fcefyn.pcp.tp1.solution;
 
 import ar.edu.unc.fcefyn.pcp.tp1.api.OrderState;
 
+import java.util.concurrent.TimeUnit;
+
 public class AssignmentWorker implements Runnable {
     private final ThreadSafeBufferQueue<Order> inQueue;
     private final ThreadSafeBufferQueue<Order> outQueue;
@@ -30,7 +32,7 @@ public class AssignmentWorker implements Runnable {
                 order.incrementCount(0);
 
                 if (assignmentDelayMs > 0){
-                    Thread.sleep(assignmentDelayMs);
+                    TimeUnit.MILLISECONDS.sleep(assignmentDelayMs);
                 }
                 logger.logEvent(order.getId(), 0, 1, OrderState.CREATED, OrderState.WAITING_VALIDATION, printer.getId());
                 outQueue.push(order);
