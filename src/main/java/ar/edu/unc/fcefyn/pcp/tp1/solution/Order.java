@@ -61,10 +61,10 @@ public class Order {
 
     public void incrementCount(int code) {
         switch (code) {
-            case 0: ++assignmentCount;
-            case 1: ++validationCount;
-            case 2: ++printingCount;
-            case 3: ++qualityControlCount;
+            case 0: ++assignmentCount; break;
+            case 1: ++validationCount; break;
+            case 2: ++printingCount; break;
+            case 3: ++qualityControlCount; break;
         }
     }
 

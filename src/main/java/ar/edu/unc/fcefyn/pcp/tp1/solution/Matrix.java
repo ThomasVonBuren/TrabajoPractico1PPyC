@@ -14,6 +14,12 @@ public class Matrix {
         this.rows = config.printerRows();
         this.columns = config.printerColumns();
         this.M = new Printer[rows][columns];
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+
+            }
+        }
     }
 
     public Matrix(int r, int c){
@@ -60,7 +66,7 @@ public class Matrix {
     }
 
     private boolean isValidPos(int r, int c){
-        return (r >= 0)&&(r > rows)&&(c >= 0)&&(c < columns);
+        return (r >= 0)&&(r < rows)&&(c >= 0)&&(c < columns);
     }
 
     public synchronized  Printer getAvailableAndReserve(Order o) throws InterruptedException {
@@ -88,8 +94,31 @@ public class Matrix {
         notifyAll();
     }
 
+    public synchronized void releasePrinterById(String printerId) {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                if (M[r][c] != null && M[r][c].getId().equals(printerId)) {
+                    releasePrinter(M[r][c]);
+                    return;
+                }
+            }
+        }
+    }
+
     public synchronized void breakPrinter(Printer p) {
         p.setCurrentState(PrinterState.OUT_OF_SERVICE);
         p.setNoOrder();
     }
+
+    public synchronized void breakPrinterById(String printerId) {
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < columns; c++) {
+                if (M[r][c] != null && M[r][c].getId().equals(printerId)) {
+                    breakPrinter(M[r][c]);
+                    return;
+                }
+            }
+        }
+    }
 }
+
