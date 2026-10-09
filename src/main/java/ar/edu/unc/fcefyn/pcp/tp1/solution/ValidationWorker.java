@@ -12,16 +12,16 @@ public class ValidationWorker implements Runnable {
     private final Matrix matrix;
     private final long validationDelayMs;
     private final Logger logger;
-    private final OutcomeDecider outcomeDecider;
+
     private final SimulationConfig config;
 
-public ValidationWorker(ThreadSafeBufferQueue<Order> inQueue, ThreadSafeBufferQueue<Order> outQueue, Matrix matrix, long validationDelayMs, Logger logger, OutcomeDecider outcomeDecider, SimulationConfig config) {
+public ValidationWorker(ThreadSafeBufferQueue<Order> inQueue, ThreadSafeBufferQueue<Order> outQueue, Matrix matrix, long validationDelayMs, Logger logger,  SimulationConfig config) {
         this.inQueue = inQueue;
         this.outQueue = outQueue;
         this.matrix = matrix;
         this.validationDelayMs = validationDelayMs;
         this.logger = logger;
-        this.outcomeDecider = outcomeDecider;
+
         this.config = config;
     }
 
@@ -33,22 +33,20 @@ public ValidationWorker(ThreadSafeBufferQueue<Order> inQueue, ThreadSafeBufferQu
                 if(order == null){
                     break;
                 }
+                if (validationDelayMs > 0){
+                    Thread.sleep(validationDelayMs);
+                }
                 if(outcomeDecider.isModelValid(order.getId(), config)){
                     order.send2PrintOrder();
                     order.incrementCount(1);
-                    if (validationDelayMs > 0){
-                        Thread.sleep(validationDelayMs);
-                    }
                     logger.logEvent(order.getId(), 2, 1, OrderState.WAITING_VALIDATION, OrderState.READY_TO_PRINT, order.getAssignedPrinterId());
+                    outQueue.push(order);
                 } else{
                     order.rejectOrder();
                     order.incrementCount(1);
                     //Printer printer = matrix.getPrinter(order.getAssignedPrinterId());
                     String printerId = order.getAssignedPrinterId();
                     matrix.releasePrinterById(printerId);
-                    if (validationDelayMs > 0){
-                        TimeUnit.MILLISECONDS.sleep(validationDelayMs);
-                    }
                     logger.logEvent(order.getId(), 2, 1, OrderState.WAITING_VALIDATION, OrderState.REJECTED, order.getAssignedPrinterId());
                 }
             }
